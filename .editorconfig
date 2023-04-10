@@ -1,0 +1,2 @@
+[*.{fs,fsx}]
+fsharp_experimental_elmish = true
