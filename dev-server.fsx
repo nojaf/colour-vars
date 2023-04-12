@@ -43,7 +43,7 @@ let build () =
 
     Cli
         .Wrap("dotnet")
-        .WithArguments("fable -e .js")
+        .WithArguments("fable ./ColourVars.fsproj -e .js")
         .WithWorkingDirectory(__SOURCE_DIRECTORY__)
         .ExecuteAsync()
         .Task.Wait()
@@ -92,7 +92,7 @@ match args with
     let fableHandle =
         Cli
             .Wrap("dotnet")
-            .WithArguments("fable watch -e .js --define DEBUG")
+            .WithArguments("fable watch ./ColourVars.fsproj -e .js --define DEBUG")
             .WithWorkingDirectory(__SOURCE_DIRECTORY__)
             .Observe(cancellationToken = cts.Token)
         |> Observable.subscribe (fun ev ->
