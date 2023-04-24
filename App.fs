@@ -25,6 +25,9 @@ type ColourSea =
     [<Emit("$0.darken($1)")>]
     abstract member darken: amount: int -> ColourSea
 
+    [<Emit("$0.lighten($1)")>]
+    abstract member lighten: amount: int -> ColourSea
+
     [<Emit("$0.hex($1)")>]
     abstract member hex: unit -> string
 
@@ -56,7 +59,7 @@ let App () =
     )
 
     let result name colour =
-        let hoverColour = colourSea(colour).darken(5).hex ()
+        let hoverColour = colourSea(colour).lighten(15).hex ()
         let borderColour = colourSea(colour).darken(15).hex ()
         let textColour = if isBlackTextOk colour then "black" else "white"
 
