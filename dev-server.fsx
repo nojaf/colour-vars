@@ -36,7 +36,7 @@ Console.CancelKeyPress.Add(fun _ ->
 
 let dist = __SOURCE_DIRECTORY__ </> "dist"
 
-let port = 3000us
+let port = 4000us
 
 let build () =
     Shell.rm_rf dist

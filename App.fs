@@ -37,7 +37,7 @@ let isBlackTextOk (hex: string) =
     if String.IsNullOrWhiteSpace hex || hex.Length < 7 then
         false
     else
-        let color = if hex.[0] = '#' then hex.Substring(1, 6) else hex
+        let color = if hex.[0] = '#' then hex.Substring(1, 6).ToUpper() else hex
         let hexToFloat v = Convert.ToInt32(v, 16) |> float
         let r = hexToFloat (color.Substring(0, 2))
         let g = hexToFloat (color.Substring(2, 2))
@@ -48,6 +48,13 @@ let isBlackTextOk (hex: string) =
 let App () =
     let colour, setColour = React.useState "#42A5E7"
     let name, setName = React.useState "primary"
+    let level, setLevel = React.useState 15
+
+    let updateLevel (v: string) =
+        match Int32.TryParse v with
+        | false, _ -> setLevel 15
+        | true, v -> setLevel v
+
     let copyButtonText, setCopyButtonText = React.useState "Click to copy"
     let _, copy = useCopyToClipboard ()
 
@@ -58,9 +65,10 @@ let App () =
         , [| copyButtonText |]
     )
 
-    let result name colour =
-        let hoverColour = colourSea(colour).lighten(15).hex ()
-        let borderColour = colourSea(colour).darken(15).hex ()
+    let result name (colour: string) level =
+        let colour = colour.Trim()
+        let hoverColour = colourSea(colour).lighten(level).hex ()
+        let borderColour = colourSea(colour).darken(level).hex ()
         let textColour = if isBlackTextOk colour then "black" else "white"
 
         let resultCode =
@@ -97,8 +105,10 @@ let App () =
             input [ Type "text"; Value colour; OnChange(fun e -> setColour e.Value) ]
             label [] [ str "variable name" ]
             input [ Type "text"; DefaultValue name; OnChange(fun e -> setName e.Value) ]
+            label [] [ str "Level" ]
+            input [ Type "number"; DefaultValue level; OnChange(fun e -> updateLevel e.Value) ]
         ]
-        result name colour
+        result name colour level
     ]
 
 let app = document.querySelector "main"
